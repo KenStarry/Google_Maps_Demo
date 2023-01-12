@@ -13,7 +13,7 @@ import com.example.googlemapsdemo.databinding.ActivityMapsBinding
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
+    private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +38,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        map = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val kakamega = LatLng(0.3236950297405758, 34.7479339327619)
+        map.addMarker(MarkerOptions().position(kakamega).title("Marker in Kakamega"))
+//        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
+        //  the newLatLongZoom accepts two values, the location and zoom value
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kakamega, 15f))
+
+        //  modifying map gestures
+        map.uiSettings.apply {
+            //  enable the pinch to zoom gestures
+            isZoomGesturesEnabled = true
+            //  enable the zoom controls
+            isZoomControlsEnabled = true
+            //  enable/disable scroll gestures
+            isScrollGesturesEnabled = true
+            //  tilt gestures
+            isTiltGesturesEnabled = true
+        }
     }
 }
