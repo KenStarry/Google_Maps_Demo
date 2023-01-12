@@ -62,6 +62,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         //  adding padding
-        map.setPadding(0, 0, 300, 0)
+        map.setPadding(0, 0, 20, 0)
     }
 }
