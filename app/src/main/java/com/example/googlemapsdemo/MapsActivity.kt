@@ -57,6 +57,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isScrollGesturesEnabled = true
             //  tilt gestures
             isTiltGesturesEnabled = true
+            //  rotate gestures
+            isRotateGesturesEnabled = true
         }
     }
 }
