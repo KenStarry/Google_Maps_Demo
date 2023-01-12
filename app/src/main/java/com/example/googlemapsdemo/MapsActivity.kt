@@ -44,8 +44,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val kakamega = LatLng(0.3236950297405758, 34.7479339327619)
         map.addMarker(MarkerOptions().position(kakamega).title("Marker in Kakamega"))
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
-        //  the newLatLongZoom accepts two values, the location and zoom value
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kakamega, 15f))
+        //  the newLatLongZoom accepts two values, the location and zoom value - 1 to 20
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kakamega, 10f))
 
         //  modifying map gestures
         map.uiSettings.apply {
