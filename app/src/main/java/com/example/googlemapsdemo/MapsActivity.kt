@@ -60,5 +60,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             //  rotate gestures
             isRotateGesturesEnabled = true
         }
+
+        //  adding padding
+        map.setPadding(0, 0, 300, 0)
     }
 }
