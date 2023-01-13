@@ -117,6 +117,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if (!success)
                 Log.d("Maps", "Failed to add style")
+
         } catch (e: Exception) {
             Log.d("Maps", "$e")
         }
