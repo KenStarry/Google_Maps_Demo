@@ -13,12 +13,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.googlemapsdemo.databinding.ActivityMapsBinding
+import com.example.googlemapsdemo.misc.TypeAndStyle
 import com.google.android.gms.maps.model.MapStyleOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private val typeAndStyle by lazy { TypeAndStyle() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,28 +40,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.normal_map -> {
-                //  apply NORMAL maps
-                map.mapType = GoogleMap.MAP_TYPE_NORMAL
-            }
-            R.id.hybrid_map -> {
-                //  apply HYBRID maps
-                map.mapType = GoogleMap.MAP_TYPE_HYBRID
-            }
-            R.id.satellite_map -> {
-                //  apply SATELLITE maps
-                map.mapType = GoogleMap.MAP_TYPE_SATELLITE
-            }
-            R.id.terrain_map -> {
-                //  apply TERRAIN maps
-                map.mapType = GoogleMap.MAP_TYPE_TERRAIN
-            }
-            R.id.none_map -> {
-                //  apply NONE maps
-                map.mapType = GoogleMap.MAP_TYPE_NONE
-            }
-        }
+        typeAndStyle.setMapType(item, map)
         return true
     }
 
@@ -99,28 +80,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //  adding padding
         map.setPadding(0, 0, 20, 0)
 
-        setMapStyle(map)
-    }
-
-    //  set our map style using our map_style.json raw file
-    //  customized from -> https://mapstyle.withgoogle.com/
-    private fun setMapStyle(googleMap: GoogleMap) {
-
-        try {
-            //  returns a boolean
-            val success = googleMap.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    this,
-                    R.raw.map_style
-                )
-            )
-
-            if (!success)
-                Log.d("Maps", "Failed to add style")
-
-        } catch (e: Exception) {
-            Log.d("Maps", "$e")
-        }
+        typeAndStyle.setMapStyle(map, this)
     }
 }
 
