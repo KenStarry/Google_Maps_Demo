@@ -105,7 +105,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //  updating camera position and scrolling to the desired point
         lifecycleScope.launch {
             delay(4000L)
-            map.moveCamera(CameraUpdateFactory.scrollBy(100f, 0f))
+//            map.moveCamera(CameraUpdateFactory.scrollBy(100f, 0f))
+
+            //  scroll to a certain position
+//            map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewPort.mmustBounds, 100))
+
+            //  create a latLong boundary
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewPort.mmustBounds.center, 10f))
         }
     }
 }
