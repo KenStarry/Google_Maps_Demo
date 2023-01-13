@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.lifecycleScope
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -87,6 +88,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map.setPadding(0, 0, 20, 0)
 
         typeAndStyle.setMapStyle(map, this)
+
+        //  change default zoom levels
+//        map.setMinZoomPreference(15f)
+//        map.setMaxZoomPreference(17f)
+
+        //  set zoom preference programmatically
+        lifecycleScope
     }
 }
 
