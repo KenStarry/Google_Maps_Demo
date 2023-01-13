@@ -6,10 +6,10 @@ import com.google.android.gms.maps.model.LatLng
 class CameraAndViewPort {
 
     //  define the camera position for our current location
-    val kakamega: CameraPosition = CameraPosition.Builder()
-        .target(LatLng(0.3236950297405758, 34.7479339327619))
+    val pangoPosition: CameraPosition = CameraPosition.Builder()
+        .target(LatLng(-1.2660835072326522, 36.837240037594015))
         .zoom(17f)
-        .bearing(100f)
+        .bearing(20f)
         .tilt(45f)
         .build()
 }

@@ -2,7 +2,6 @@ package com.example.googlemapsdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.example.googlemapsdemo.databinding.ActivityMapsBinding
 import com.example.googlemapsdemo.misc.CameraAndViewPort
 import com.example.googlemapsdemo.misc.TypeAndStyle
-import com.google.android.gms.maps.model.MapStyleOptions
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -61,14 +61,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
 
         // Add a marker in Sydney and move the camera
-        val kakamega = LatLng(0.3236950297405758, 34.7479339327619)
-        map.addMarker(MarkerOptions().position(kakamega).title("Marker in Kakamega"))
+        val pango = LatLng(-1.2660835072326522, 36.837240037594015)
+        map.addMarker(MarkerOptions().position(pango).title("Marker in Kakamega"))
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
         //  the newLatLongZoom accepts two values, the location and zoom value - 1 to 20
 //        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kakamega, 10f))
 
         //  our own custom camera position
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.kakamega))
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition))
 
         //  modifying map gestures
         map.uiSettings.apply {
@@ -94,7 +94,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //        map.setMaxZoomPreference(17f)
 
         //  set zoom preference programmatically
-        lifecycleScope
+        lifecycleScope.launch {
+            delay(5000L)
+//            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+            map.moveCamera(CameraUpdateFactory.zoomTo(18f))
+        }
     }
 }
 
