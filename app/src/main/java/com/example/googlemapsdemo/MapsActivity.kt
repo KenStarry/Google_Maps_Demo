@@ -62,6 +62,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         val pango = LatLng(-1.2660835072326522, 36.837240037594015)
+        val archives = LatLng(-1.2849899496958332, 36.82597919288422)
+
         map.addMarker(MarkerOptions().position(pango).title("Marker in Kakamega"))
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
         //  the newLatLongZoom accepts two values, the location and zoom value - 1 to 20
@@ -94,10 +96,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //        map.setMaxZoomPreference(17f)
 
         //  set zoom preference programmatically
+//        lifecycleScope.launch {
+//            delay(5000L)
+////            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+//            map.moveCamera(CameraUpdateFactory.zoomTo(18f))
+//        }
+
+        //  updating camera position and scrolling to the desired point
         lifecycleScope.launch {
-            delay(5000L)
-//            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
-            map.moveCamera(CameraUpdateFactory.zoomTo(18f))
+            delay(4000L)
+            map.moveCamera(CameraUpdateFactory.scrollBy(100f, 0f))
         }
     }
 }
