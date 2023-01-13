@@ -2,6 +2,7 @@ package com.example.googlemapsdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
@@ -12,6 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.googlemapsdemo.databinding.ActivityMapsBinding
+import com.google.android.gms.maps.model.MapStyleOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -96,5 +98,35 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //  adding padding
         map.setPadding(0, 0, 20, 0)
+
+        setMapStyle(map)
+    }
+
+    //  set our map style using our map_style.json raw file
+    //  customized from -> https://mapstyle.withgoogle.com/
+    private fun setMapStyle(googleMap: GoogleMap) {
+
+        try {
+            //  returns a boolean
+            val success = googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    this,
+                    R.raw.map_style
+                )
+            )
+
+            if (!success)
+                Log.d("Maps", "Failed to add style")
+        } catch (e: Exception) {
+            Log.d("Maps", "$e")
+        }
     }
 }
+
+
+
+
+
+
+
+
