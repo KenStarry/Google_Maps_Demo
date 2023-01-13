@@ -13,6 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.googlemapsdemo.databinding.ActivityMapsBinding
+import com.example.googlemapsdemo.misc.CameraAndViewPort
 import com.example.googlemapsdemo.misc.TypeAndStyle
 import com.google.android.gms.maps.model.MapStyleOptions
 
@@ -20,7 +21,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+
     private val typeAndStyle by lazy { TypeAndStyle() }
+    private val cameraAndViewPort by lazy { CameraAndViewPort() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +64,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map.addMarker(MarkerOptions().position(kakamega).title("Marker in Kakamega"))
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
         //  the newLatLongZoom accepts two values, the location and zoom value - 1 to 20
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kakamega, 10f))
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kakamega, 10f))
+
+        //  our own custom camera position
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.kakamega))
 
         //  modifying map gestures
         map.uiSettings.apply {
