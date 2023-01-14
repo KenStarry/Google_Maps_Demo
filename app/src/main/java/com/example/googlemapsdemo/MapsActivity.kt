@@ -127,6 +127,8 @@ class MapsActivity : AppCompatActivity(),
             isRotateGesturesEnabled = true
         }
 
+        //  set our custom info window layout
+        map.setInfoWindowAdapter(CustomInfoAdapter(this))
         //  adding padding
         map.setPadding(0, 0, 20, 0)
 
