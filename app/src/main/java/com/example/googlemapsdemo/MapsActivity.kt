@@ -2,6 +2,7 @@ package com.example.googlemapsdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -16,10 +17,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.example.googlemapsdemo.databinding.ActivityMapsBinding
 import com.example.googlemapsdemo.misc.CameraAndViewPort
 import com.example.googlemapsdemo.misc.TypeAndStyle
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
+import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListener{
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -65,7 +69,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val pango = LatLng(-1.2660835072326522, 36.837240037594015)
         val archives = LatLng(-1.2849899496958332, 36.82597919288422)
 
-        map.addMarker(MarkerOptions().position(pango).title("Marker in Kakamega"))
+        val pangoMarker = map.addMarker(MarkerOptions().position(pango).title("Marker in Kakamega"))
+        pangoMarker?.tag = "Home"
+
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
         //  the newLatLongZoom accepts two values, the location and zoom value - 1 to 20
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(pango, 10f))
@@ -129,26 +135,35 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             //  restrict user movement after setting bounds
 //            map.setLatLngBoundsForCameraTarget(cameraAndViewPort.mmustBounds)
+
+            //  REMOVE A MARKER
+//            pangoMarker?.remove()
         }
 
-        onMapClicked()
-        onMapLongClicked()
+        map.setOnMarkerClickListener(this)
     }
 
-    private fun onMapClicked() {
-        map.setOnMapClickListener {
-            Toast.makeText(this, "Single Click", Toast.LENGTH_SHORT).show()
+    override fun onMarkerClick(marker: Marker): Boolean {
+        marker.let {
+            Log.d("Marker", "${marker.tag}")
         }
+        return true
     }
 
-    private fun onMapLongClicked() {
-        map.setOnMapLongClickListener {
-            Toast.makeText(this, "Long Click", Toast.LENGTH_SHORT).show()
-
-            //  create a new marker onLongClick
-            map.addMarker(MarkerOptions().position(it).title("New Marker"))
-        }
-    }
+    //    private fun onMapClicked() {
+//        map.setOnMapClickListener {
+//            Toast.makeText(this, "Single Click", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+//
+//    private fun onMapLongClicked() {
+//        map.setOnMapLongClickListener {
+//            Toast.makeText(this, "Long Click", Toast.LENGTH_SHORT).show()
+//
+//            //  create a new marker onLongClick
+//            map.addMarker(MarkerOptions().position(it).title("New Marker"))
+//        }
+//    }
 }
 
 
