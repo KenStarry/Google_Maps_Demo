@@ -147,7 +147,7 @@ class MapsActivity : AppCompatActivity(),
 
         //  updating camera position and scrolling to the desired point
         lifecycleScope.launch {
-            delay(5000L)
+            delay(1000L)
             //  our own custom camera position
             map.animateCamera(
                 CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition),
