@@ -1,11 +1,17 @@
 package com.example.googlemapsdemo
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.lifecycleScope
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,6 +26,7 @@ import com.example.googlemapsdemo.misc.TypeAndStyle
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.delay
@@ -78,9 +85,14 @@ class MapsActivity : AppCompatActivity(),
                 .position(pango)
                 .title("Marker in Kakamega")
                 .draggable(true)
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
         //  you can select hue from 0-360
-                .icon(BitmapDescriptorFactory.defaultMarker(134f))
+//                .icon(BitmapDescriptorFactory.defaultMarker(134f))
+        //  use a custom marker icon
+//                .icon(convertVectorToBitmap(R.drawable.baseline_electric_car_24, Color.parseColor("#008cff")))
+                .alpha(0.7f)
+//                .rotation(10f)
+                .flat(true)
         )
         pangoMarker?.tag = "Home"
 
@@ -177,6 +189,28 @@ class MapsActivity : AppCompatActivity(),
 
     override fun onMarkerDragStart(marker: Marker) {
         Log.d("Drag", "Drag Started")
+    }
+
+    private fun convertVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
+
+        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources, id, null)
+        if (vectorDrawable == null) {
+            Log.d("MapsActivity", "Resource not found")
+            return BitmapDescriptorFactory.defaultMarker()
+        }
+
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+        DrawableCompat.setTint(vectorDrawable, color)
+        vectorDrawable.draw(canvas)
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     //    private fun onMapClicked() {
