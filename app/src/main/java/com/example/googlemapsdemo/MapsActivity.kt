@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -103,7 +104,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         lifecycleScope.launch {
             delay(5000L)
             //  our own custom camera position
-            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition), 4000, null)
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition), 4000, object : GoogleMap.CancelableCallback {
+                override fun onCancel() {
+                    //  called when animation is canceled
+                    Toast.makeText(this@MapsActivity, "Cancelled", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFinish() {
+                    //  called when animation is finished
+                    Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
+                }
+            })
             //  zoom using animation
 //            map.animateCamera(CameraUpdateFactory.zoomTo(15f), 2000, null)
 
