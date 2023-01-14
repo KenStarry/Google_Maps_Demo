@@ -9,9 +9,9 @@ class CameraAndViewPort {
     //  define the camera position for our current location
     val pangoPosition: CameraPosition = CameraPosition.Builder()
         .target(LatLng(-1.2660835072326522, 36.837240037594015))
-        .zoom(17f)
+        .zoom(18f)
         .bearing(20f)
-        .tilt(45f)
+        .tilt(90f)
         .build()
 
     val mmustBounds = LatLngBounds(

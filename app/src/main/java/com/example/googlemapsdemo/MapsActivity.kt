@@ -67,10 +67,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map.addMarker(MarkerOptions().position(pango).title("Marker in Kakamega"))
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
         //  the newLatLongZoom accepts two values, the location and zoom value - 1 to 20
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kakamega, 10f))
-
-        //  our own custom camera position
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(pango, 10f))
 
         //  modifying map gestures
         map.uiSettings.apply {
@@ -92,7 +89,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         typeAndStyle.setMapStyle(map, this)
 
         //  change default zoom levels
-//        map.setMinZoomPreference(15f)
+//        map.setMinZoomPreference(5f)
 //        map.setMaxZoomPreference(17f)
 
         //  set zoom preference programmatically
@@ -104,18 +101,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //  updating camera position and scrolling to the desired point
         lifecycleScope.launch {
-            delay(4000L)
+            delay(5000L)
+            //  our own custom camera position
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition), 4000, null)
+            //  zoom using animation
+//            map.animateCamera(CameraUpdateFactory.zoomTo(15f), 2000, null)
+
             //  scroll to a certain position
 //            map.moveCamera(CameraUpdateFactory.scrollBy(100f, 0f))
 
             //  create a latLong boundary
 //            map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewPort.mmustBounds.center, 10f))
 
-            //  creating bounds
-            map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewPort.mmustBounds, 100))
+            //  creating bounds using animate camera instead of moveCamera
+//            map.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewPort.mmustBounds, 100), 2000, null)
 
             //  restrict user movement after setting bounds
-            map.setLatLngBoundsForCameraTarget(cameraAndViewPort.mmustBounds)
+//            map.setLatLngBoundsForCameraTarget(cameraAndViewPort.mmustBounds)
         }
     }
 }
