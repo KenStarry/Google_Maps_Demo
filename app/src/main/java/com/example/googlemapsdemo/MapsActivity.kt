@@ -19,11 +19,14 @@ import com.example.googlemapsdemo.misc.CameraAndViewPort
 import com.example.googlemapsdemo.misc.TypeAndStyle
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
+import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListener{
+class MapsActivity : AppCompatActivity(),
+    OnMapReadyCallback, OnMarkerClickListener,
+    OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -69,7 +72,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         val pango = LatLng(-1.2660835072326522, 36.837240037594015)
         val archives = LatLng(-1.2849899496958332, 36.82597919288422)
 
-        val pangoMarker = map.addMarker(MarkerOptions().position(pango).title("Marker in Kakamega"))
+        val pangoMarker = map.addMarker(
+            MarkerOptions().position(pango)
+                .title("Marker in Kakamega")
+                .draggable(true)
+        )
         pangoMarker?.tag = "Home"
 
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
@@ -110,17 +117,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         lifecycleScope.launch {
             delay(5000L)
             //  our own custom camera position
-            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition), 4000, object : GoogleMap.CancelableCallback {
-                override fun onCancel() {
-                    //  called when animation is canceled
-                    Toast.makeText(this@MapsActivity, "Cancelled", Toast.LENGTH_SHORT).show()
-                }
+            map.animateCamera(
+                CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition),
+                4000,
+                object : GoogleMap.CancelableCallback {
+                    override fun onCancel() {
+                        //  called when animation is canceled
+                        Toast.makeText(this@MapsActivity, "Cancelled", Toast.LENGTH_SHORT).show()
+                    }
 
-                override fun onFinish() {
-                    //  called when animation is finished
-                    Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
-                }
-            })
+                    override fun onFinish() {
+                        //  called when animation is finished
+                        Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
+                    }
+                })
             //  zoom using animation
 //            map.animateCamera(CameraUpdateFactory.zoomTo(15f), 2000, null)
 
@@ -141,13 +151,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         }
 
         map.setOnMarkerClickListener(this)
+        map.setOnMarkerDragListener(this)
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
         marker.let {
             Log.d("Marker", "${marker.tag}")
         }
+        //  the default behaviour will not happen when we return true
         return true
+    }
+
+    override fun onMarkerDrag(marker: Marker) {
+        Log.d("Drag", "Dragged")
+    }
+
+    override fun onMarkerDragEnd(marker: Marker) {
+        Log.d("Drag", "Drag Ended")
+    }
+
+    override fun onMarkerDragStart(marker: Marker) {
+        Log.d("Drag", "Drag Started")
     }
 
     //    private fun onMapClicked() {
