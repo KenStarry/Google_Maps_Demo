@@ -20,6 +20,7 @@ import com.example.googlemapsdemo.misc.TypeAndStyle
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -73,9 +74,13 @@ class MapsActivity : AppCompatActivity(),
         val archives = LatLng(-1.2849899496958332, 36.82597919288422)
 
         val pangoMarker = map.addMarker(
-            MarkerOptions().position(pango)
+            MarkerOptions()
+                .position(pango)
                 .title("Marker in Kakamega")
                 .draggable(true)
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+        //  you can select hue from 0-360
+                .icon(BitmapDescriptorFactory.defaultMarker(134f))
         )
         pangoMarker?.tag = "Home"
 
