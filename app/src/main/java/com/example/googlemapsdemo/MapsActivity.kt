@@ -33,7 +33,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MapsActivity : AppCompatActivity(),
-    OnMapReadyCallback, OnMarkerClickListener,
+    OnMapReadyCallback,
     OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
@@ -85,7 +85,8 @@ class MapsActivity : AppCompatActivity(),
         val pangoMarker = map.addMarker(
             MarkerOptions()
                 .position(pango)
-                .title("Marker in Kakamega")
+                .title("Marker in Pango")
+                .snippet("pango is a really cool place")
                 .draggable(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
         //  you can select hue from 0-360
@@ -103,6 +104,7 @@ class MapsActivity : AppCompatActivity(),
             MarkerOptions()
                 .position(archives)
                 .title("Marker in Archives")
+                .snippet("Where it all goes down...")
                 .zIndex(1f)
         )
 
@@ -177,17 +179,17 @@ class MapsActivity : AppCompatActivity(),
 //            pangoMarker?.remove()
         }
 
-        map.setOnMarkerClickListener(this)
+//        map.setOnMarkerClickListener(this)
         map.setOnMarkerDragListener(this)
     }
 
-    override fun onMarkerClick(marker: Marker): Boolean {
-        marker.let {
-            Log.d("Marker", "${marker.tag}")
-        }
-        //  the default behaviour will not happen when we return true
-        return true
-    }
+//    override fun onMarkerClick(marker: Marker): Boolean {
+//        marker.let {
+//            Log.d("Marker", "${marker.tag}")
+//        }
+//        //  the default behaviour will not happen when we return true
+//        return true
+//    }
 
     override fun onMarkerDrag(marker: Marker) {
         Log.d("Drag", "Dragged")
