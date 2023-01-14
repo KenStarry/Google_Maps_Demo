@@ -130,6 +130,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             //  restrict user movement after setting bounds
 //            map.setLatLngBoundsForCameraTarget(cameraAndViewPort.mmustBounds)
         }
+
+        onMapClicked()
+        onMapLongClicked()
+    }
+
+    private fun onMapClicked() {
+        map.setOnMapClickListener {
+            Toast.makeText(this, "Single Click", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun onMapLongClicked() {
+        map.setOnMapLongClickListener {
+            Toast.makeText(this, "Long Click", Toast.LENGTH_SHORT).show()
+
+            //  create a new marker onLongClick
+            map.addMarker(MarkerOptions().position(it).title("New Marker"))
+        }
     }
 }
 
