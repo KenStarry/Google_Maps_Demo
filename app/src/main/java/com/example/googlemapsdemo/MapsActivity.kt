@@ -34,6 +34,7 @@ import kotlinx.coroutines.launch
 
 class MapsActivity : AppCompatActivity(),
     OnMapReadyCallback,
+    OnMarkerClickListener,
     OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
@@ -181,15 +182,21 @@ class MapsActivity : AppCompatActivity(),
 
 //        map.setOnMarkerClickListener(this)
         map.setOnMarkerDragListener(this)
+        map.setOnMarkerClickListener(this)
     }
 
-//    override fun onMarkerClick(marker: Marker): Boolean {
-//        marker.let {
-//            Log.d("Marker", "${marker.tag}")
-//        }
-//        //  the default behaviour will not happen when we return true
-//        return true
-//    }
+    override fun onMarkerClick(marker: Marker): Boolean {
+        marker.let {
+            Log.d("Marker", "${marker.tag}")
+        }
+
+        //  show info window and/or hide it
+        marker.showInfoWindow()
+        //  animate zoom position
+        map.animateCamera(CameraUpdateFactory.zoomTo(19f), 2000, null)
+        //  the default behaviour will not happen when we return true
+        return true
+    }
 
     override fun onMarkerDrag(marker: Marker) {
         Log.d("Drag", "Dragged")
