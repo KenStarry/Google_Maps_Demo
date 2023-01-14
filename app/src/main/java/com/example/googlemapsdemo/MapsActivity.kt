@@ -78,8 +78,10 @@ class MapsActivity : AppCompatActivity(),
 
         // Add a marker in Sydney and move the camera
         val pango = LatLng(-1.2660835072326522, 36.837240037594015)
+        val mmustPosition = LatLng(-1.2660835072326522, 36.837240037594015)
         val archives = LatLng(-1.2849899496958332, 36.82597919288422)
 
+        //  marker for pangani
         val pangoMarker = map.addMarker(
             MarkerOptions()
                 .position(pango)
@@ -92,9 +94,17 @@ class MapsActivity : AppCompatActivity(),
 //                .icon(convertVectorToBitmap(R.drawable.baseline_electric_car_24, Color.parseColor("#008cff")))
                 .alpha(0.7f)
 //                .rotation(10f)
-                .flat(true)
+                .flat(false)
+                .zIndex(2f)
         )
         pangoMarker?.tag = "Home"
+
+        val archivesMarker = map.addMarker(
+            MarkerOptions()
+                .position(archives)
+                .title("Marker in Archives")
+                .zIndex(1f)
+        )
 
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
         //  the newLatLongZoom accepts two values, the location and zoom value - 1 to 20
@@ -189,28 +199,6 @@ class MapsActivity : AppCompatActivity(),
 
     override fun onMarkerDragStart(marker: Marker) {
         Log.d("Drag", "Drag Started")
-    }
-
-    private fun convertVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
-
-        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources, id, null)
-        if (vectorDrawable == null) {
-            Log.d("MapsActivity", "Resource not found")
-            return BitmapDescriptorFactory.defaultMarker()
-        }
-
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        DrawableCompat.setTint(vectorDrawable, color)
-        vectorDrawable.draw(canvas)
-
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     //    private fun onMapClicked() {
