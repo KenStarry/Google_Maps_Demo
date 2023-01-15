@@ -1,34 +1,24 @@
 package com.example.googlemapsdemo
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.lifecycleScope
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.example.googlemapsdemo.databinding.ActivityMapsBinding
 import com.example.googlemapsdemo.misc.CameraAndViewPort
 import com.example.googlemapsdemo.misc.TypeAndStyle
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -39,6 +29,11 @@ class MapsActivity : AppCompatActivity(),
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+
+    // Add a marker in Sydney and move the camera
+    private val westlandsPosition = LatLng(-1.2673718969605754, 36.81226686858198)
+    private val mmustPosition = LatLng(-1.2660835072326522, 36.837240037594015)
+    private val archives = LatLng(-1.2849899496958332, 36.82597919288422)
 
     private val typeAndStyle by lazy { TypeAndStyle() }
     private val cameraAndViewPort by lazy { CameraAndViewPort() }
@@ -77,17 +72,12 @@ class MapsActivity : AppCompatActivity(),
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val pango = LatLng(-1.2660835072326522, 36.837240037594015)
-        val mmustPosition = LatLng(-1.2660835072326522, 36.837240037594015)
-        val archives = LatLng(-1.2849899496958332, 36.82597919288422)
-
         //  marker for pangani
-        val pangoMarker = map.addMarker(
+        val westlandsMarker = map.addMarker(
             MarkerOptions()
-                .position(pango)
-                .title("Marker in Pango")
-                .snippet("pango is a really cool place")
+                .position(westlandsPosition)
+                .title("Marker in Westlands")
+                .snippet("Westlands is a really cool place")
                 .draggable(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
         //  you can select hue from 0-360
@@ -99,7 +89,7 @@ class MapsActivity : AppCompatActivity(),
                 .flat(false)
                 .zIndex(2f)
         )
-        pangoMarker?.tag = "Home"
+        westlandsMarker?.tag = "Home"
 
         val archivesMarker = map.addMarker(
             MarkerOptions()
@@ -111,7 +101,7 @@ class MapsActivity : AppCompatActivity(),
 
 //        map.moveCamera(CameraUpdateFactory.newLatLng(kakamega))
         //  the newLatLongZoom accepts two values, the location and zoom value - 1 to 20
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(pango, 10f))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(westlandsPosition, 10f))
 
         //  modifying map gestures
         map.uiSettings.apply {
@@ -150,7 +140,7 @@ class MapsActivity : AppCompatActivity(),
             delay(1000L)
             //  our own custom camera position
             map.animateCamera(
-                CameraUpdateFactory.newCameraPosition(cameraAndViewPort.pangoPosition),
+                CameraUpdateFactory.newCameraPosition(cameraAndViewPort.westlandsPosition),
                 4000,
                 object : GoogleMap.CancelableCallback {
                     override fun onCancel() {
@@ -185,6 +175,8 @@ class MapsActivity : AppCompatActivity(),
 //        map.setOnMarkerClickListener(this)
         map.setOnMarkerDragListener(this)
         map.setOnMarkerClickListener(this)
+
+        addPolyline()
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -226,6 +218,20 @@ class MapsActivity : AppCompatActivity(),
 //            map.addMarker(MarkerOptions().position(it).title("New Marker"))
 //        }
 //    }
+
+    //  POLYLINE
+    private fun addPolyline() {
+
+        val polyline = map.addPolyline(
+            PolylineOptions().apply {
+                //  define the exact points/locations
+                add(westlandsPosition, archives)
+                width(5f)
+                color(Color.BLUE)
+                geodesic(true)
+            }
+        )
+    }
 }
 
 

@@ -7,9 +7,9 @@ import com.google.android.gms.maps.model.LatLngBounds
 class CameraAndViewPort {
 
     //  define the camera position for our current location
-    val pangoPosition: CameraPosition = CameraPosition.Builder()
-        .target(LatLng(-1.2660835072326522, 36.837240037594015))
-        .zoom(18f)
+    val westlandsPosition: CameraPosition = CameraPosition.Builder()
+        .target(LatLng(-1.2673718969605754, 36.81226686858198))
+        .zoom(13f)
         .bearing(20f)
         .tilt(90f)
         .build()
