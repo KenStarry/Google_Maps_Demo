@@ -18,6 +18,7 @@ import com.example.googlemapsdemo.misc.CameraAndViewPort
 import com.example.googlemapsdemo.misc.TypeAndStyle
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
+import com.google.android.gms.maps.GoogleMap.OnPolylineClickListener
 import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
 class MapsActivity : AppCompatActivity(),
     OnMapReadyCallback,
     OnMarkerClickListener,
-    OnMarkerDragListener {
+    OnMarkerDragListener,
+    OnPolylineClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -34,6 +36,8 @@ class MapsActivity : AppCompatActivity(),
     private val westlandsPosition = LatLng(-1.2673718969605754, 36.81226686858198)
     private val mmustPosition = LatLng(-1.2660835072326522, 36.837240037594015)
     private val archives = LatLng(-1.2849899496958332, 36.82597919288422)
+    private val nakuru = LatLng(-0.22972987913780205, 36.05791600918683)
+    private val kakamega = LatLng(0.3103618307600136, 34.77220581284084)
 
     private val typeAndStyle by lazy { TypeAndStyle() }
     private val cameraAndViewPort by lazy { CameraAndViewPort() }
@@ -80,9 +84,9 @@ class MapsActivity : AppCompatActivity(),
                 .snippet("Westlands is a really cool place")
                 .draggable(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
-        //  you can select hue from 0-360
+                //  you can select hue from 0-360
 //                .icon(BitmapDescriptorFactory.defaultMarker(134f))
-        //  use a custom marker icon
+                //  use a custom marker icon
 //                .icon(convertVectorToBitmap(R.drawable.baseline_electric_car_24, Color.parseColor("#008cff")))
                 .alpha(0.7f)
 //                .rotation(10f)
@@ -141,7 +145,7 @@ class MapsActivity : AppCompatActivity(),
             //  our own custom camera position
             map.animateCamera(
                 CameraUpdateFactory.newCameraPosition(cameraAndViewPort.westlandsPosition),
-                4000,
+                2000,
                 object : GoogleMap.CancelableCallback {
                     override fun onCancel() {
                         //  called when animation is canceled
@@ -173,10 +177,15 @@ class MapsActivity : AppCompatActivity(),
         }
 
 //        map.setOnMarkerClickListener(this)
-        map.setOnMarkerDragListener(this)
+        map.setOnMarkerDragListener(this)t a
         map.setOnMarkerClickListener(this)
+        map.setOnPolylineClickListener(this)
 
-        addPolyline()
+        lifecycleScope.launch {
+            addPolyline()
+
+            map.animateCamera(CameraUpdateFactory.zoomTo(7f), 2000, null)
+        }
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -220,7 +229,7 @@ class MapsActivity : AppCompatActivity(),
 //    }
 
     //  POLYLINE
-    private fun addPolyline() {
+    private suspend fun addPolyline() {
 
         val polyline = map.addPolyline(
             PolylineOptions().apply {
@@ -229,8 +238,22 @@ class MapsActivity : AppCompatActivity(),
                 width(5f)
                 color(Color.BLUE)
                 geodesic(true)
+                clickable(true)
             }
         )
+
+        delay(4000)
+
+        val newPoints = listOf(
+            westlandsPosition, nakuru, kakamega
+        )
+
+        polyline.points = newPoints
+
+    }
+
+    override fun onPolylineClick(p0: Polyline) {
+        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
     }
 }
 
