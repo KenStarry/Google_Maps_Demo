@@ -26,8 +26,7 @@ import kotlinx.coroutines.launch
 class MapsActivity : AppCompatActivity(),
     OnMapReadyCallback,
     OnMarkerClickListener,
-    OnMarkerDragListener,
-    OnPolylineClickListener {
+    OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -177,13 +176,10 @@ class MapsActivity : AppCompatActivity(),
         }
 
 //        map.setOnMarkerClickListener(this)
-        map.setOnMarkerDragListener(this)t a
+        map.setOnMarkerDragListener(this)
         map.setOnMarkerClickListener(this)
-        map.setOnPolylineClickListener(this)
 
         lifecycleScope.launch {
-            addPolyline()
-
             map.animateCamera(CameraUpdateFactory.zoomTo(7f), 2000, null)
         }
     }
@@ -227,34 +223,6 @@ class MapsActivity : AppCompatActivity(),
 //            map.addMarker(MarkerOptions().position(it).title("New Marker"))
 //        }
 //    }
-
-    //  POLYLINE
-    private suspend fun addPolyline() {
-
-        val polyline = map.addPolyline(
-            PolylineOptions().apply {
-                //  define the exact points/locations
-                add(westlandsPosition, archives)
-                width(5f)
-                color(Color.BLUE)
-                geodesic(true)
-                clickable(true)
-            }
-        )
-
-        delay(4000)
-
-        val newPoints = listOf(
-            westlandsPosition, nakuru, kakamega
-        )
-
-        polyline.points = newPoints
-
-    }
-
-    override fun onPolylineClick(p0: Polyline) {
-        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
-    }
 }
 
 
