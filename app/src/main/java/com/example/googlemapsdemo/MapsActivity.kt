@@ -15,6 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.example.googlemapsdemo.databinding.ActivityMapsBinding
 import com.example.googlemapsdemo.misc.CameraAndViewPort
+import com.example.googlemapsdemo.misc.MapShapes
 import com.example.googlemapsdemo.misc.TypeAndStyle
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
@@ -40,6 +41,7 @@ class MapsActivity : AppCompatActivity(),
 
     private val typeAndStyle by lazy { TypeAndStyle() }
     private val cameraAndViewPort by lazy { CameraAndViewPort() }
+    private val shapes by lazy { MapShapes() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,6 +128,7 @@ class MapsActivity : AppCompatActivity(),
         map.setPadding(0, 0, 20, 0)
 
         typeAndStyle.setMapStyle(map, this)
+        shapes.addPolygon(map)
 
         //  change default zoom levels
 //        map.setMinZoomPreference(5f)

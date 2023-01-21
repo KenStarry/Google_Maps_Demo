@@ -46,7 +46,7 @@ class MapShapes {
     }
 
     //  POLYGON
-    private fun addPolygon(map: GoogleMap) {
+    fun addPolygon(map: GoogleMap) {
 
         val polygon = map.addPolygon(PolygonOptions().apply {
             add(p0, p1, p2, p3)
