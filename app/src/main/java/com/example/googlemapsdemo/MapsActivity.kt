@@ -129,7 +129,7 @@ class MapsActivity : AppCompatActivity(),
 
         typeAndStyle.setMapStyle(map, this)
         lifecycleScope.launch {
-            shapes.addCircle(map)
+            shapes.addPolyline(map)
         }
 
         //  change default zoom levels

@@ -3,10 +3,16 @@ package com.example.googlemapsdemo.misc
 import android.graphics.Color
 import com.example.googlemapsdemo.R
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.ButtCap
 import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.Dash
+import com.google.android.gms.maps.model.Dot
+import com.google.android.gms.maps.model.Gap
+import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.RoundCap
 import kotlinx.coroutines.delay
 
 class MapShapes {
@@ -29,16 +35,22 @@ class MapShapes {
     private val p03 = LatLng(-1.2967708833496088, 36.81412238740762)
 
     //  POLYLINE
-    private suspend fun addPolyline(map: GoogleMap) {
+    suspend fun addPolyline(map: GoogleMap) {
+
+        val pattern = listOf(Dot(), Gap(30f), Dash(50f))
 
         val polyline = map.addPolyline(
             PolylineOptions().apply {
                 //  define the exact points/locations
                 add(westlandsPosition, archives)
-                width(5f)
+                width(50f)
                 color(Color.BLUE)
                 geodesic(true)
                 clickable(true)
+                jointType(JointType.BEVEL)
+                startCap(RoundCap())
+                endCap(ButtCap())
+//                pattern(pattern)
             }
         )
 
