@@ -1,6 +1,7 @@
 package com.example.googlemapsdemo.misc
 
 import android.graphics.Color
+import com.example.googlemapsdemo.R
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolygonOptions
@@ -20,6 +21,11 @@ class MapShapes {
     private val p1 = LatLng(-1.2791142537498352, 36.869841499971265)
     private val p2 = LatLng(-1.3112024597026435, 36.87457366270635)
     private val p3 = LatLng(-1.322926894420689, 36.79042346450435)
+
+    private val p00 = LatLng(-1.286657136058744, 36.81404080419273)
+    private val p01 = LatLng(-1.2869222146258155, 36.827094118574884)
+    private val p02 = LatLng(-1.2960572129873222, 36.82813430456471)
+    private val p03 = LatLng(-1.2967708833496088, 36.81412238740762)
 
     //  POLYLINE
     private suspend fun addPolyline(map: GoogleMap) {
@@ -50,7 +56,19 @@ class MapShapes {
 
         val polygon = map.addPolygon(PolygonOptions().apply {
             add(p0, p1, p2, p3)
+            fillColor(R.color.myBlue)
+            strokeColor(R.color.myBlue)
+            addHole(listOf(p00, p01, p02, p03))
         })
     }
 
 }
+
+
+
+
+
+
+
+
+
