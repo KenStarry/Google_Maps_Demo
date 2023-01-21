@@ -3,6 +3,7 @@ package com.example.googlemapsdemo.misc
 import android.graphics.Color
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.delay
 
@@ -15,6 +16,10 @@ class MapShapes {
     private val nakuru = LatLng(-0.22972987913780205, 36.05791600918683)
     private val kakamega = LatLng(0.3103618307600136, 34.77220581284084)
 
+    private val p0 = LatLng(-1.2744861137741026, 36.791349322430776)
+    private val p1 = LatLng(-1.2791142537498352, 36.869841499971265)
+    private val p2 = LatLng(-1.3112024597026435, 36.87457366270635)
+    private val p3 = LatLng(-1.322926894420689, 36.79042346450435)
 
     //  POLYLINE
     private suspend fun addPolyline(map: GoogleMap) {
@@ -38,6 +43,14 @@ class MapShapes {
 
         polyline.points = newPoints
 
+    }
+
+    //  POLYGON
+    private fun addPolygon(map: GoogleMap) {
+
+        val polygon = map.addPolygon(PolygonOptions().apply {
+            add(p0, p1, p2, p3)
+        })
     }
 
 }
