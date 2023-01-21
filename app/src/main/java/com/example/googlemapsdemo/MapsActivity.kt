@@ -16,6 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.example.googlemapsdemo.databinding.ActivityMapsBinding
 import com.example.googlemapsdemo.misc.CameraAndViewPort
 import com.example.googlemapsdemo.misc.MapShapes
+import com.example.googlemapsdemo.misc.Overlays
 import com.example.googlemapsdemo.misc.TypeAndStyle
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
@@ -42,6 +43,7 @@ class MapsActivity : AppCompatActivity(),
     private val typeAndStyle by lazy { TypeAndStyle() }
     private val cameraAndViewPort by lazy { CameraAndViewPort() }
     private val shapes by lazy { MapShapes() }
+    private val overlays by lazy { Overlays() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,6 +144,8 @@ class MapsActivity : AppCompatActivity(),
 ////            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
 //            map.moveCamera(CameraUpdateFactory.zoomTo(18f))
 //        }
+
+        overlays.addGroundOverlay(map)
 
         //  updating camera position and scrolling to the desired point
         lifecycleScope.launch {
