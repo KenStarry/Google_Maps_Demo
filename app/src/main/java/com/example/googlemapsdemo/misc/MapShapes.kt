@@ -3,6 +3,7 @@ package com.example.googlemapsdemo.misc
 import android.graphics.Color
 import com.example.googlemapsdemo.R
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.gms.maps.model.PolylineOptions
@@ -62,6 +63,19 @@ class MapShapes {
         })
     }
 
+    //  CIRCLE
+    suspend fun addCircle(map: GoogleMap) {
+
+        val circle = map.addCircle(CircleOptions().apply {
+            center(kakamega)
+            radius(50000.0)
+            fillColor(R.color.myBlue)
+        })
+
+        delay(3000)
+
+        circle.fillColor = R.color.teal_200
+    }
 }
 
 

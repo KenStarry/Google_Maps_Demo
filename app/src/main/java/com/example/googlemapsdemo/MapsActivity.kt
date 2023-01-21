@@ -128,7 +128,9 @@ class MapsActivity : AppCompatActivity(),
         map.setPadding(0, 0, 20, 0)
 
         typeAndStyle.setMapStyle(map, this)
-        shapes.addPolygon(map)
+        lifecycleScope.launch {
+            shapes.addCircle(map)
+        }
 
         //  change default zoom levels
 //        map.setMinZoomPreference(5f)
