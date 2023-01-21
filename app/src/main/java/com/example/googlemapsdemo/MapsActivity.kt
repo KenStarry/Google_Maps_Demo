@@ -1,5 +1,7 @@
 package com.example.googlemapsdemo
 
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +9,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -122,6 +126,7 @@ class MapsActivity : AppCompatActivity(),
             isTiltGesturesEnabled = true
             //  rotate gestures
             isRotateGesturesEnabled = true
+            isMyLocationButtonEnabled = true
         }
 
         //  set our custom info window layout
@@ -130,6 +135,8 @@ class MapsActivity : AppCompatActivity(),
         map.setPadding(0, 0, 20, 0)
 
         typeAndStyle.setMapStyle(map, this)
+
+        checkLocationPermission()
         lifecycleScope.launch {
             shapes.addPolyline(map)
         }
@@ -145,44 +152,42 @@ class MapsActivity : AppCompatActivity(),
 //            map.moveCamera(CameraUpdateFactory.zoomTo(18f))
 //        }
 
-        overlays.addGroundOverlay(map)
-
         //  updating camera position and scrolling to the desired point
-        lifecycleScope.launch {
-            delay(1000L)
-            //  our own custom camera position
-            map.animateCamera(
-                CameraUpdateFactory.newCameraPosition(cameraAndViewPort.westlandsPosition),
-                2000,
-                object : GoogleMap.CancelableCallback {
-                    override fun onCancel() {
-                        //  called when animation is canceled
-                        Toast.makeText(this@MapsActivity, "Cancelled", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onFinish() {
-                        //  called when animation is finished
-                        Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
-                    }
-                })
-            //  zoom using animation
-//            map.animateCamera(CameraUpdateFactory.zoomTo(15f), 2000, null)
-
-            //  scroll to a certain position
-//            map.moveCamera(CameraUpdateFactory.scrollBy(100f, 0f))
-
-            //  create a latLong boundary
-//            map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewPort.mmustBounds.center, 10f))
-
-            //  creating bounds using animate camera instead of moveCamera
-//            map.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewPort.mmustBounds, 100), 2000, null)
-
-            //  restrict user movement after setting bounds
-//            map.setLatLngBoundsForCameraTarget(cameraAndViewPort.mmustBounds)
-
-            //  REMOVE A MARKER
-//            pangoMarker?.remove()
-        }
+//        lifecycleScope.launch {
+//            delay(1000L)
+//            //  our own custom camera position
+//            map.animateCamera(
+//                CameraUpdateFactory.newCameraPosition(cameraAndViewPort.westlandsPosition),
+//                2000,
+//                object : GoogleMap.CancelableCallback {
+//                    override fun onCancel() {
+//                        //  called when animation is canceled
+//                        Toast.makeText(this@MapsActivity, "Cancelled", Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                    override fun onFinish() {
+//                        //  called when animation is finished
+//                        Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
+//                    }
+//                })
+//            //  zoom using animation
+////            map.animateCamera(CameraUpdateFactory.zoomTo(15f), 2000, null)
+//
+//            //  scroll to a certain position
+////            map.moveCamera(CameraUpdateFactory.scrollBy(100f, 0f))
+//
+//            //  create a latLong boundary
+////            map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewPort.mmustBounds.center, 10f))
+//
+//            //  creating bounds using animate camera instead of moveCamera
+////            map.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewPort.mmustBounds, 100), 2000, null)
+//
+//            //  restrict user movement after setting bounds
+////            map.setLatLngBoundsForCameraTarget(cameraAndViewPort.mmustBounds)
+//
+//            //  REMOVE A MARKER
+////            pangoMarker?.remove()
+//        }
 
 //        map.setOnMarkerClickListener(this)
         map.setOnMarkerDragListener(this)
@@ -232,6 +237,48 @@ class MapsActivity : AppCompatActivity(),
 //            map.addMarker(MarkerOptions().position(it).title("New Marker"))
 //        }
 //    }
+
+    private fun checkLocationPermission() {
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) ==
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            map.isMyLocationEnabled = true
+        } else {
+            requestPermission()
+        }
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+            1
+        )
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode != 1) {
+            return
+        }
+
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Permission granted!", Toast.LENGTH_SHORT).show()
+             map.isMyLocationEnabled = true
+        } else {
+            Toast.makeText(this, "We need your permission", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
 
 
